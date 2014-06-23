@@ -1,0 +1,15 @@
+extends layout
+block body
+	form.bs-example.form-horizontal(method='POST', action='')
+		h1 Account Information : 
+		br
+		br
+
+		p Account ID : #{user}
+		p Address : #{address}
+		p Contact Number : #{contact}					
+		label Name :  
+			input(type="text", name="name" value="#{first_name} #{last_name}")
+		br
+		br
+		button.btn.btn-primary(type='submit' onClick='top.location.href="/edit_account"') Save Changes

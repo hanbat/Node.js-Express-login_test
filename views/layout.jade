@@ -4,7 +4,7 @@ html
     meta(charset='utf-8')
     meta(content='IE=edge', http-equiv='X-UA-Compatible')
     meta(content='width=device-width, initial-scale=1', name='viewport')
-    title= 'Express-Stormpath (sample) | ' + title
+    title= title
     link(href='/css/bootstrap.min.css', rel='stylesheet')
     <!--[if lt IE 9 ]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -13,18 +13,25 @@ html
   body
     .container
       .header
-        ul.nav.nav-pills.pull-right
+        ul.nav.nav-pills.pull-left
           li
-            a(href='/') Home
+            a(href='/men') MEN
+          li
+            a(href='/women') WOMEN            
+          li
+            a(href='/') SEARCH                        
+        ul.nav.nav-pills.pull-right
           if user
             li
-              a(href='/dashboard') Dashbaord
+              a(href='/dashboard') ACCOUNT
             li
-              a(href='/logout') Logout
+              a(href='/logout') LOGOUT
           else
             li
-              a(href='/login') Login
-        h3.text-muted Parioli
+              a(href='/login') LOGIN
+            li
+              a(href='/register') REGISTER				
+      a.sitename(href='/') PARIOLI
       block body
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js')
-    script(src='/js/bootstrap.min.js')
+    

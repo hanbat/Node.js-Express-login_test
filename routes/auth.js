@@ -1,7 +1,36 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
-var stormpath = require('stormpath');
+
+var mysql = require('mysql');
+
+var connection = mysql.createConnection({
+  host     : 'localhost',
+  user     : 'root',
+  password : '',
+  database : 'test'
+});
+
+connection.connect(function(err) {
+  
+  if (err) {
+    console.error('error connecting: ' + err.stack);
+    return;
+  }
+
+  console.log('DB is Connected Successfully');
+  
+});
+
+
+connection.query("select count(*) from users", function(err, rows, fields){
+
+  if(err) throw err;
+
+  console.log('Users in the database : ', rows[0] );
+
+
+});
 
 
 // Render the registration page.
@@ -21,36 +50,41 @@ router.post('/register', function(req, res) {
     return res.render('register', {title: 'Register', error: 'Email and password required.'});
   }
 
-  // Initialize our Stormpath client.
-  var apiKey = new stormpath.ApiKey(
-    process.env['STORMPATH_API_KEY_ID'],
-    process.env['STORMPATH_API_KEY_SECRET']
-  );
-  var spClient = new stormpath.Client({ apiKey: apiKey });
 
-  // Grab our app, then attempt to create this user's account.
-  var app = spClient.getApplication(process.env['STORMPATH_APP_HREF'], function(err, app) {
+  connection.query('select * from users where email="' + username + '" limit 1', function(err,rows,fields){
+
     if (err) throw err;
 
-    app.createAccount({
-      givenName: 'John',
-      surname: 'Smith',
-      username: username,
-      email: username,
-      password: password,
-    }, function (err, createdAccount) {
-      if (err) {
-        return res.render('register', {title: 'Register', error: err.userMessage});
-      } else {
-        passport.authenticate('stormpath')(req, res, function () {
-          return res.redirect('/dashboard');
-        });
-      }
-    });
+    if (rows.username)
+      console.log('The user with email : ' + username + ' cannot be registered.');
+
+    else {
+
+      connection.query('insert into users SET ?', {email: username, password: password}, function(err, result){
+
+        if (err) throw err;
+
+        else {
+
+          console.log('User is Successfully created.');
+          req.session.regenerate(function(){
+
+            req.session.user = username;
+            res.redirect('/');
+
+          });
+
+        }
+
+      });
+
+    }
+
+
+
   });
 
 });
-
 
 // Render the login page.
 router.get('/login', function(req, res) {
@@ -59,23 +93,49 @@ router.get('/login', function(req, res) {
 
 
 // Authenticate a user.
-router.post(
-  '/login',
-  passport.authenticate(
-    'stormpath',
-    {
-      successRedirect: '/dashboard',
-      failureRedirect: '/login',
-      failureFlash: 'Invalid email or password.',
-    }
-  )
-);
+router.post('/login', function(req, res){
+
+
+  var username = req.body.username;
+  var password = req.body.password;
+
+  console.log(username);
+  console.log(password);
+
+  // Grab user fields.
+  if (!username || !password) {
+    return res.render('login', {title: 'Login', error: 'Email and password required.'});
+  }
+
+  connection.query('select * from users where email="' + username + '" and password="' + password + '" limit 1', function(err,rows,fields){
+
+      if (err) throw err;
+
+
+      console.log(rows);
+      if (rows[0].email) {
+
+          req.session.regenerate(function(){
+
+            req.session.user = username;
+            res.redirect('/dashboard');
+
+          });
+      }
+
+      else 
+          return res.render('login', {title: 'Login', error: 'Email or password is wrong.'});
+    });
+});
 
 
 // Logout the user, then redirect to the home page.
 router.get('/logout', function(req, res) {
-  req.logout();
-  res.redirect('/');
+  
+  req.session.destroy(function(){
+    res.redirect('/');
+  });
+
 });
 
 

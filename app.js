@@ -17,25 +17,6 @@ var StormpathStrategy = require('passport-stormpath');
 var session = require('express-session');
 var flash = require('connect-flash');
 
-var mysql = require('mysql');
-
-var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : ''
-});
-
-connection.connect(function(err) {
-  if (err) {
-    console.error('error connecting: ' + err.stack);
-    return;
-  }
-
-  console.log('DB is Connected with info : ' + connection);
-  
-});
-
-
 var app = express();
 
 var strategy = new StormpathStrategy();
