@@ -42,8 +42,6 @@ router.get('/dashboard', function(req,res){
 	connection.query("select * from account inner join users u on u.id = account.user_id where email ='" + req.session.user + "'", function(err, rows, fields){
 
 	  if(err) throw err;
-
-
 	  
 	  res.render('dashboard', {title: 'Dashboard',
 	  						   user: req.session.user,
@@ -59,10 +57,10 @@ router.get('/dashboard', function(req,res){
 
 router.get('/edit_account', function(req, res){
 
+	if ( !req.session.user ) 
+		return res.redirect('/login');
+
 	console.log('Current session user : ' + req.session.user);
-
-
-
 
 
 	connection.query("select * from account inner join users u on u.id = account.user_id where email ='" + req.session.user + "'", function(err, rows, fields){
@@ -84,6 +82,34 @@ router.get('/edit_account', function(req, res){
 
 router.post('/edit_account', function(req, res){
 
+
+	console.log('Current session user : ' + req.session.user);
+	console.log(req.body);
+
+	var user_id;
+
+	connection.query("select * from account inner join users u on u.id = account.user_id where email ='" + req.session.user + "'", function(err, rows, fields){
+
+	  if(err) throw err;
+
+	  user_id = rows[0].user_id;
+
+	  console.log(user_id);
+
+	  console.log(req.body.name.split(' ')[0]);
+	  console.log(req.body.name.split(' ')[1]);
+
+	  connection.query("update account set address='" + req.body.address + "' where user_id=" + user_id + ";");
+	  connection.query("update account set contact='" + req.body.contact + "' where user_id=" + user_id + ";");
+	  connection.query("update account set first_name='" + req.body.name.split(' ')[0] + "' where user_id=" + user_id + ";");
+	  if( req.body.name.split(' ')[1] !== undefined )
+	  	connection.query("update account set last_name='" + req.body.name.split(' ')[1] + "' where user_id=" + user_id + ";");
+	 else
+	 	connection.query("update account set last_name=' ' where user_id=" + user_id + ";");
+
+	  res.redirect('/dashboard');
+
+	});
 
 });
 

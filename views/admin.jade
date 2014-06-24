@@ -3,7 +3,7 @@ block body
 	.row
 		.jumbotron
 			form.bs-example.form-horizontal(method='POST', action='')
-				h1 Account Information : 
+				h1 Item Information : 
 				br
 				br
 
@@ -19,11 +19,4 @@ block body
 					input(type="text", name="name" value="#{first_name} #{last_name}")
 				br
 				br
-				button.btn.btn-primary(type='submit' onClick='top.location.href="/edit_account"') Save Changes
-				&nbsp
-				button.btn.btn-primary(type='button' onClick='top.location.href="/change_password"') Change Password
-				&nbsp
-				button.btn.btn-primary(type='button' onClick='top.location.href="/dashboard"') Go back
-
-
-					
+				button.btn.btn-primary(type='submit' onClick='top.location.href="/edit_account"') Submit item

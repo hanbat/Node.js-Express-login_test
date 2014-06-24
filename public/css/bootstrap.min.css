@@ -114,7 +114,7 @@ select,
 textarea {
   margin: 0;
   font: inherit;
-  color: inherit;
+  color: black;
 }
 button {
   overflow: visible;
@@ -142,8 +142,11 @@ input::-moz-focus-inner {
 input {
   line-height: normal;
 }
+
+input[type='text'],
 input[type="checkbox"],
 input[type="radio"] {
+  /*width: 100%*/
   box-sizing: border-box;
   padding: 0;
 }
@@ -277,15 +280,15 @@ body {
   font-size: 14px;
   line-height: 1.42857143;
   color: #333;
-  background-color: #fff;
-    background: url('/images/paris.jpg') no-repeat center center fixed;
+  background-color: black;
+    /*background: url('/images/paris.jpg') no-repeat center center fixed;*/
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
 }
 
-#mainpage {
+.mainpage {
   background: url('/images/paris.jpg') no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -776,6 +779,8 @@ pre code {
   margin-left: auto;
 }
 .row {
+  color: white;
+  margin-top: 200px;
   margin-right: -15px;
   margin-left: -15px;
 }
@@ -1657,7 +1662,7 @@ legend {
   margin-bottom: 20px;
   font-size: 21px;
   line-height: inherit;
-  color: #333;
+  color: white;
   border: 0;
   border-bottom: 1px solid #e5e5e5;
 }
@@ -4386,7 +4391,7 @@ a.list-group-item.active > .badge,
   margin-bottom: 30px;
   color: inherit;
   /*background-color: transparent;*/
-  background-color: #eee;
+  /*background-color: #eee;*/
 }
 .jumbotron h1,
 .jumbotron .h1 {
@@ -5811,7 +5816,7 @@ a.sitename {
 
 	clear:left;
 	position: absolute;
-	left:50%;
+	left: 45%;
 	color: white;
 	text-align: center;
 	font-size: 25px;
@@ -5822,15 +5827,31 @@ ul.nav-all-left {
 
 	position: absolute;
 	text-align: left;
-
-	left: 1.4%;
+	list-style: none;
+	left: 1.4%;	
 	top : 8%;
 
 }
 
-.nav-all-left > li {
-	
-	text-align: left;
+
+
+.nav-brands > li {
+	position: absolute;
+	text-align: center;
 	list-style: none;
+	left: 3%;
+	top : 20%;
 
 }
+
+
+
+
+
+
+
+
+
+
+
+

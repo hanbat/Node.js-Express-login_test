@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 
 var index_routes = require('./routes/index');
 var auth_routes = require('./routes/auth');
+var admin_routes = require('./routes/admin');
 
 
 
@@ -56,6 +57,7 @@ app.use(flash());
 
 app.use('/', index_routes);
 app.use('/', auth_routes);
+app.use('/', admin_routes);
 
 
 /// catch 404 and forwarding to error handler
