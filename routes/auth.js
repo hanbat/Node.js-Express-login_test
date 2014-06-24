@@ -149,9 +149,6 @@ router.post('/change_password', function(req, res){
 
   });
 
-  
-
-
 });
 
 // Render the login page.
